@@ -1,0 +1,19 @@
+# Convert BIKE column to numeric and complete the analysis
+df['BIKE_numeric'] = pd.to_numeric(df['BIKE'].replace('4+', '4'), errors='coerce')
+
+print("Bike ownership by gender:")
+bike_by_gender = df.groupby('SEX')['BIKE_numeric'].mean()
+print(bike_by_gender)
+
+print("\
+Navigo subscription by area (top 10):")
+navigo_by_area = df.groupby('AREA_NAME')['NAVIGO_SUB'].mean().sort_values(ascending=False).head(10)
+print(navigo_by_area)
+
+print("\
+=== DATASET SUMMARY ===")
+print(f"Total individuals: {len(df)}")
+print(f"Age range: {df['AGE'].min()}-{df['AGE'].max()} years")
+print(f"Average household size: {df['NBPERS_HOUSE'].mean():.1f} people")
+print(f"Most common housing type: {df['TYPE_HOUSE'].mode()[0]}")
+print(f"Driving licence holders: {df['DRIVING_LICENCE'].sum()} ({df['DRIVING_LICENCE'].mean()*100:.1f}%)")
