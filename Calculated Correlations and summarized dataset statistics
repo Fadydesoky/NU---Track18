@@ -1,0 +1,24 @@
+# Fix the error by handling boolean columns properly
+print("=== ADDITIONAL PATTERNS ===")
+print("Correlation between age and car ownership:")
+age_car_corr = df['AGE'].corr(df['NB_CAR'])
+print(f"Age-Car correlation: {age_car_corr:.3f}")
+
+print("\
+Bike ownership by gender:")
+# Convert boolean to numeric for proper aggregation
+bike_by_gender = df.groupby('SEX')['BIKE'].apply(lambda x: (x > 0).mean())
+print(bike_by_gender)
+
+print("\
+Navigo subscription by area (top 10):")
+navigo_by_area = df.groupby('AREA_NAME')['NAVIGO_SUB'].apply(lambda x: x.mean()).sort_values(ascending=False).head(10)
+print(navigo_by_area)
+
+print("\
+=== DATASET SUMMARY ===")
+print(f"Total individuals: {len(df)}")
+print(f"Age range: {df['AGE'].min()}-{df['AGE'].max()} years")
+print(f"Average household size: {df['NBPERS_HOUSE'].mean():.1f} people")
+print(f"Most common housing type: {df['TYPE_HOUSE'].mode()[0]}")
+print(f"Driving licence holders: {(df['DRIVING_LICENCE']).sum()} ({(df['DRIVING_LICENCE']).mean()*100:.1f}%)")
