@@ -1,0 +1,47 @@
+# 3. Car ownership percentage
+print("=== CAR OWNERSHIP ===")
+car_owners = (df['NB_CAR'] > 0).sum()
+total_individuals = len(df)
+car_ownership_pct = (car_owners / total_individuals) * 100
+print(f"Car ownership percentage: {car_ownership_pct:.1f}%")
+print(f"People with cars: {car_owners} out of {total_individuals}")
+
+# 4. Driving licence distribution
+print("\
+=== DRIVING LICENCE DISTRIBUTION ===")
+licence_counts = df['DRIVING_LICENCE'].value_counts()
+print(licence_counts)
+
+# 5. Professional category distribution
+print("\
+=== PROFESSIONAL CATEGORY DISTRIBUTION ===")
+pro_cat_counts = df['PRO_CAT'].value_counts().sort_index()
+print(pro_cat_counts)
+
+# Create visualizations
+fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+
+# Car ownership pie chart
+car_data = [car_owners, total_individuals - car_owners]
+car_labels = ['Has Car', 'No Car']
+axes[0,0].pie(car_data, labels=car_labels, autopct='%1.1f%%', startangle=90)
+axes[0,0].set_title('Car Ownership Distribution')
+
+# Driving licence pie chart
+axes[0,1].pie(licence_counts.values, labels=licence_counts.index, autopct='%1.1f%%', startangle=90)
+axes[0,1].set_title('Driving Licence Distribution')
+
+# Professional category bar chart
+axes[1,0].bar(pro_cat_counts.index.astype(str), pro_cat_counts.values)
+axes[1,0].set_title('Professional Category Distribution')
+axes[1,0].set_xlabel('Professional Category')
+axes[1,0].set_ylabel('Count')
+
+# Number of cars histogram
+axes[1,1].hist(df['NB_CAR'], bins=range(0, df['NB_CAR'].max()+2), edgecolor='black', alpha=0.7)
+axes[1,1].set_title('Number of Cars per Individual')
+axes[1,1].set_xlabel('Number of Cars')
+axes[1,1].set_ylabel('Frequency')
+
+plt.tight_layout()
+plt.show()
