@@ -1,0 +1,27 @@
+1. Gender distribution
+print("=== GENDER DISTRIBUTION ===")
+gender_counts = df['SEX'].value_counts()
+print(gender_counts)
+
+# Create gender distribution pie chart
+plt.figure(figsize=(8, 6))
+plt.pie(gender_counts.values, labels=gender_counts.index, autopct='%1.1f%%', startangle=90)
+plt.title('Gender Distribution')
+plt.axis('equal')
+plt.show()
+
+2. Age distribution
+print("\
+=== AGE DISTRIBUTION ===")
+print("Mean age:", df['AGE'].mean())
+print("Median age:", df['AGE'].median())
+print("Age range:", df['AGE'].min(), "to", df['AGE'].max())
+
+Age histogram
+plt.figure(figsize=(10, 6))
+plt.hist(df['AGE'], bins=20, edgecolor='black', alpha=0.7)
+plt.title('Age Distribution')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.grid(True, alpha=0.3)
+plt.show()
