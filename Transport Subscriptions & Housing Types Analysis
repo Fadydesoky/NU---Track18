@@ -1,0 +1,61 @@
+# 6. Transport subscription types distribution
+print("=== TRANSPORT SUBSCRIPTION TYPES ===")
+transport_subs = ['NAVIGO_SUB', 'IMAGINER_SUB', 'OTHER_SUB_PT', 'BIKE_SUB', 'NSM_SUB']
+
+for sub in transport_subs:
+    count = df[sub].sum()
+    pct = (count / len(df)) * 100
+    print(f"{sub}: {count} ({pct:.1f}%)")
+
+# 7. Housing type distribution
+print("\
+=== HOUSING TYPE DISTRIBUTION ===")
+house_type_counts = df['TYPE_HOUSE'].value_counts()
+print(house_type_counts)
+
+# Create visualizations for remaining analyses
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+
+# Transport subscriptions bar chart
+sub_counts = [df[sub].sum() for sub in transport_subs]
+sub_labels = [sub.replace('_SUB', '').replace('_', ' ') for sub in transport_subs]
+axes[0,0].bar(sub_labels, sub_counts)
+axes[0,0].set_title('Transport Subscription Types')
+axes[0,0].set_ylabel('Number of Subscribers')
+axes[0,0].tick_params(axis='x', rotation=45)
+
+# Housing type pie chart
+axes[0,1].pie(house_type_counts.values, labels=house_type_counts.index, autopct='%1.1f%%', startangle=90)
+axes[0,1].set_title('Housing Type Distribution')
+
+# Age vs Number of Cars scatter plot
+axes[1,0].scatter(df['AGE'], df['NB_CAR'], alpha=0.5)
+axes[1,0].set_title('Age vs Number of Cars')
+axes[1,0].set_xlabel('Age')
+axes[1,0].set_ylabel('Number of Cars')
+
+# Household size distribution
+axes[1,1].hist(df['NBPERS_HOUSE'], bins=range(1, df['NBPERS_HOUSE'].max()+2), edgecolor='black', alpha=0.7)
+axes[1,1].set_title('Household Size Distribution')
+axes[1,1].set_xlabel('Number of Persons in Household')
+axes[1,1].set_ylabel('Frequency')
+
+plt.tight_layout()
+plt.show()
+
+# 8. Additional interesting patterns
+print("\
+=== ADDITIONAL PATTERNS ===")
+print("Correlation between age and car ownership:")
+age_car_corr = df['AGE'].corr(df['NB_CAR'])
+print(f"Age-Car correlation: {age_car_corr:.3f}")
+
+print("\
+Bike ownership by gender:")
+bike_by_gender = df.groupby('SEX')['BIKE'].mean()
+print(bike_by_gender)
+
+print("\
+Navigo subscription by area (top 10):")
+navigo_by_area = df.groupby('AREA_NAME')['NAVIGO_SUB'].mean().sort_values(ascending=False).head(10)
+print(navigo_by_area)
